@@ -4,6 +4,16 @@ const router = express.Router();
 
 let storage = [];
 
+/**
+ * @swagger
+ * /api/v1/environment-properties:
+ *      get:
+ *          description: Get all environment properties
+ *          responses:
+ *              200:
+ *                  description: All environment properties
+ * 
+ */
 router.get('/environment-properties', (req, res) => {
     res.json({
         data: storage,
@@ -11,6 +21,59 @@ router.get('/environment-properties', (req, res) => {
     });
 });
 
+/**
+ * @swagger
+ * /api/v1/environment-properties/{temperature}/{humidity}/{gasConcentration}/{pm25}/{pm10}/{latitude}/{longitude}:
+ *      get:
+ *          description: Add new environment data
+ *          parameters:
+ *              -   in: path
+ *                  name: temperature
+ *                  required: true
+ *                  description: Temperature of the environment
+ *                  schema:
+ *                      type: integer
+ *              -   in: path
+ *                  name: humidity
+ *                  required: true
+ *                  description: Humidity of environment
+ *                  schema:
+ *                      type: integer
+ *              -   in: path
+ *                  name: gasConcentration
+ *                  required: true
+ *                  description: Gas concentration of detected gas in environment
+ *                  schema:
+ *                      type: integer
+ *              -   in: path
+ *                  name: pm25
+ *                  required: true
+ *                  description: Particulate matter (PM2.5) of environment
+ *                  schema:
+ *                      type: integer
+ *              -   in: path
+ *                  name: pm10
+ *                  required: true
+ *                  description: Particulate matter (PM10) of environment
+ *                  schema:
+ *                      type: integer
+ *              -   in: path
+ *                  name: latitude
+ *                  required: true
+ *                  description: Current latitude
+ *                  schema:
+ *                      type: integer
+ *              -   in: path
+ *                  name: longitude
+ *                  required: true
+ *                  description: Current longitude
+ *                  schema:
+ *                      type: integer
+ *          responses:
+ *              200:
+ *                  description: Success
+ * 
+ */
 router.get('/environment-properties/:temperature/:humidity/:gasConcentration/:pm25/:pm10/:latitude/:longitude', (req, res) => {
     let id = storage.length + 1;
     let temperature = req.params.temperature;
@@ -54,6 +117,16 @@ router.get('/environment-properties/:temperature/:humidity/:gasConcentration/:pm
 
 });
 
+/**
+ * @swagger
+ * /api/v1/environment-properties:
+ *      delete:
+ *          description: Delete all environment properties
+ *          responses:
+ *              200:
+ *                  description: Deleted
+ * 
+ */
 router.delete('/environment-properties', (req, res) => {
 
     storage = [];
