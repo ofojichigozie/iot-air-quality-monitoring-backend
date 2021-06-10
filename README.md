@@ -1,4 +1,4 @@
-##BACKEND APPLICATION for an IoT-Based Air Quality Monitoring System
+## BACKEND APPLICATION for an IoT-Based Air Quality Monitoring System
 
 
 Github links to the frontend application and arduino code:
