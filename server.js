@@ -22,10 +22,10 @@ const app = express();
 //Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/', swaggerUIExpress.serve, swaggerUIExpress.setup(swaggerDocs));
 
 //Routes section
 app.use("/api/v1", routes);
+app.use('/', swaggerUIExpress.serve, swaggerUIExpress.setup(swaggerDocs));
 
 //Start the server application
 const PORT = process.env.PORT || 5000;
