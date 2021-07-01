@@ -1,8 +1,7 @@
 const express = require('express');
+const EnvironmentProperties = require('../models/EnvironmentProperties');
 
 const router = express.Router();
-
-let storage = [];
 
 /**
  * @swagger
@@ -12,12 +11,24 @@ let storage = [];
  *          responses:
  *              200:
  *                  description: All environment properties
+ *              500:
+ *                  description: Failed to read environment properties from DB
  * 
  */
 router.get('/environment-properties', (req, res) => {
-    res.json({
-        data: storage,
-        message: "READ"
+    // Get all environment properties
+    const environmentProperties = EnvironmentProperties.find();
+    environmentProperties.exec()
+    .then(result => {
+        res.status(200).json({
+            data: result,
+            message: 'READ'
+        });
+    })
+    .catch(error => {
+        res.status(500).json({
+            message: 'Failed to read environment properties from DB'
+        });
     });
 });
 
@@ -72,10 +83,11 @@ router.get('/environment-properties', (req, res) => {
  *          responses:
  *              200:
  *                  description: Success
+ *              500:
+ *                  description: Failed to add environment properties to DB
  * 
  */
 router.get('/environment-properties/:temperature/:humidity/:gasConcentration/:pm25/:pm10/:latitude/:longitude', (req, res) => {
-    let id = storage.length + 1;
     let temperature = req.params.temperature;
     let humidity = req.params.humidity;
     let gasConcentration = req.params.gasConcentration;
@@ -89,16 +101,10 @@ router.get('/environment-properties/:temperature/:humidity/:gasConcentration/:pm
     };
 
     const dateTime = new Date();
-
-    let day = dateTime.getDate() < 10 ? '0' + dateTime.getDate() : dateTime.getDate();
-    let month = (dateTime.getMonth() + 1) < 10 ? '0' + (dateTime.getMonth() + 1) : (dateTime.getMonth() + 1);
-    let year = dateTime.getFullYear();
-
-    let date = `${year}-${month}-${day}`;
+    let date = dateTime.toLocaleDateString();
     let time = dateTime.toLocaleTimeString();
 
-    const environmentProperties = {
-        id,
+    const environmentProperties = new EnvironmentProperties({
         temperature,
         humidity,
         gasConcentration,
@@ -106,15 +112,20 @@ router.get('/environment-properties/:temperature/:humidity/:gasConcentration/:pm
         particulateMatter,
         date,
         time
-    };
-
-    storage.push(environmentProperties);
-
-    res.json({
-        data: environmentProperties,
-        message: "CREATED"
     });
 
+    environmentProperties.save()
+    .then(result => {
+        res.status(200).json({
+            data: result,
+            message: 'CREATED'
+        });
+    })
+    .catch(error => {
+        res.status(500).json({
+            message: 'Failed to add environment properties to DB'
+        });
+    });
 });
 
 /**
@@ -125,17 +136,24 @@ router.get('/environment-properties/:temperature/:humidity/:gasConcentration/:pm
  *          responses:
  *              200:
  *                  description: Deleted
+ *              500:
+ *                  description: Could not delete environment properties from DB
  * 
  */
 router.delete('/environment-properties', (req, res) => {
-
-    storage = [];
-
-    res.json({
-        data: storage,
-        message: "DELETED"
+    const environmentProperties = EnvironmentProperties.deleteMany({});
+    environmentProperties.exec()
+    .then(result => {
+        res.status(200).json({
+            data: result,
+            message: 'DELETED'
+        });
+    })
+    .catch(error => {
+        res.status(500).json({
+            message: 'Could not delete environment properties from DB'
+        });
     });
 });
-
 
 module.exports = router;
