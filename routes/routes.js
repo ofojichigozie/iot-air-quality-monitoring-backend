@@ -101,7 +101,7 @@ router.get('/environment-properties/:temperature/:humidity/:gasConcentration/:pm
     };
 
     const dateTime = new Date();
-    dateTime.setHours(dateTime.getHours + 1);
+    dateTime.setHours(dateTime.getHours() + 1);
     let date = dateTime.toLocaleDateString();
     let time = dateTime.toLocaleTimeString();
 
