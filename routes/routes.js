@@ -34,7 +34,7 @@ router.get('/environment-properties', (req, res) => {
 
 /**
  * @swagger
- * /api/v1/environment-properties/{temperature}/{humidity}/{gasConcentration}/{pm25}/{pm10}/{latitude}/{longitude}:
+ * /api/v1/environment-properties/{temperature}/{humidity}/{mq3}/{mq5}/{mq9}/{pm25}/{pm10}/{latitude}/{longitude}:
  *      get:
  *          description: Add new environment data
  *          parameters:
