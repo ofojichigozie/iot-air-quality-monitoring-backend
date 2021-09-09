@@ -51,9 +51,21 @@ router.get('/environment-properties', (req, res) => {
  *                  schema:
  *                      type: integer
  *              -   in: path
- *                  name: gasConcentration
+ *                  name: mq3
  *                  required: true
- *                  description: Gas concentration of detected gas in environment
+ *                  description: Gas concentration (MQ3) of detected gas in environment
+ *                  schema:
+ *                      type: integer
+ *              -   in: path
+ *                  name: mq5
+ *                  required: true
+ *                  description: Gas concentration (MQ5) of detected gas in environment
+ *                  schema:
+ *                      type: integer
+ *              -   in: path
+ *                  name: mq9
+ *                  required: true
+ *                  description: Gas concentration (MQ9) of detected gas in environment
  *                  schema:
  *                      type: integer
  *              -   in: path
@@ -87,10 +99,14 @@ router.get('/environment-properties', (req, res) => {
  *                  description: Failed to add environment properties to DB
  * 
  */
-router.get('/environment-properties/:temperature/:humidity/:gasConcentration/:pm25/:pm10/:latitude/:longitude', (req, res) => {
+router.get('/environment-properties/:temperature/:humidity/:mq3/:mq5/:mq9/:pm25/:pm10/:latitude/:longitude', (req, res) => {
     let temperature = req.params.temperature;
     let humidity = req.params.humidity;
-    let gasConcentration = req.params.gasConcentration;
+    let gasConcentration = {
+        mq3: req.params.mq3,
+        mq5: req.params.mq5,
+        mq9: req.params.mq9
+    };
     let location = {
         latitude: req.params.latitude,
         longitude: req.params.longitude

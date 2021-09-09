@@ -10,7 +10,7 @@ const EnvironmentPropertiesSchema = mongoose.Schema({
         required: true
     },
     gasConcentration: {
-        type: Number,
+        type: Object,
         required: true
     },
     location: {
