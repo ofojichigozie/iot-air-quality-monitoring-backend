@@ -3,21 +3,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const routes = require("./routes/routes");
-const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUIExpress = require('swagger-ui-express');
+const routes02 = require("./routes/routes02");
 require('dotenv').config();
-
-const swaggerOptions = {
-    swaggerDefinition: {
-        info: {
-            title: 'Internet-of-Things (IoT) API',
-            version: '1.0.0',
-            description: 'API for IoT-based air quality monitoring system'
-        }
-    },
-    apis: ['routes/routes.js']
-}
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 const app = express();
 
@@ -27,7 +14,7 @@ app.use(bodyParser.json());
 
 //Routes section
 app.use("/api/v1", routes);
-app.use('/', swaggerUIExpress.serve, swaggerUIExpress.setup(swaggerDocs));
+app.use("/api/v2", routes02);
 
 //Connect to remote database
 mongoose.connect(process.env.DB_CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true}, error => {

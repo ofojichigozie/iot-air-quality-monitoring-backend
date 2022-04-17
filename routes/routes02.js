@@ -1,12 +1,12 @@
 const express = require('express');
-const EnvironmentProperties = require('../models/EnvironmentProperties');
+const EnvironmentProperties02 = require('../models/EnvironmentProperties02');
 
 const router = express.Router();
 
 router.get('/environment-properties', (req, res) => {
     // Get all environment properties
-    const environmentProperties = EnvironmentProperties.find();
-    environmentProperties.exec()
+    const environmentProperties02 = EnvironmentProperties02.find();
+    environmentProperties02.exec()
     .then(result => {
         res.status(200).json({
             data: result,
@@ -20,16 +20,16 @@ router.get('/environment-properties', (req, res) => {
     });
 });
 
-router.get('/environment-properties/:temperature/:humidity/:mq3/:mq5/:mq5e/:mq6/:mq7/:mq9/:pm25/:pm10/:latitude/:longitude', (req, res) => {
+router.get('/environment-properties/:temperature/:humidity/:mq2/:mq4/:mq8/:mq9/:mq135/:mq136/:pm25/:pm10/:latitude/:longitude', (req, res) => {
     let temperature = req.params.temperature;
     let humidity = req.params.humidity;
     let gasConcentration = {
-        mq3: req.params.mq3,
-        mq5: req.params.mq5,
-        mq5e: req.params.mq5e,
-        mq6: req.params.mq6,
-        mq7: req.params.mq7,
-        mq9: req.params.mq9
+        mq2: req.params.mq2,
+        mq4: req.params.mq4,
+        mq8: req.params.mq8,
+        mq9: req.params.mq9,
+        mq135: req.params.mq135,
+        mq136: req.params.mq136
     };
     let location = {
         latitude: req.params.latitude,
@@ -45,7 +45,7 @@ router.get('/environment-properties/:temperature/:humidity/:mq3/:mq5/:mq5e/:mq6/
     let date = dateTime.toLocaleDateString();
     let time = dateTime.toLocaleTimeString();
 
-    const environmentProperties = new EnvironmentProperties({
+    const environmentProperties02 = new EnvironmentProperties02({
         temperature,
         humidity,
         gasConcentration,
@@ -55,7 +55,7 @@ router.get('/environment-properties/:temperature/:humidity/:mq3/:mq5/:mq5e/:mq6/
         time
     });
 
-    environmentProperties.save()
+    environmentProperties02.save()
     .then(result => {
         res.status(200).json({
             data: result,
@@ -70,8 +70,8 @@ router.get('/environment-properties/:temperature/:humidity/:mq3/:mq5/:mq5e/:mq6/
 });
 
 router.delete('/environment-properties', (req, res) => {
-    const environmentProperties = EnvironmentProperties.deleteMany({});
-    environmentProperties.exec()
+    const environmentProperties02 = EnvironmentProperties02.deleteMany({});
+    environmentProperties02.exec()
     .then(result => {
         res.status(200).json({
             data: result,
