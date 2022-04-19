@@ -16,8 +16,13 @@ app.use(bodyParser.json());
 app.use("/api/v1", routes);
 app.use("/api/v2", routes02);
 
+const options = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}
+
 //Connect to remote database
-mongoose.connect(process.env.DB_CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true}, error => {
+mongoose.connect(process.env.DB_CONNECTION_STRING, options, error => {
     if(!error){
         console.log('Connected to remote database');
     } else {
