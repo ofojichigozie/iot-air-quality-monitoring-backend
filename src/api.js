@@ -2,9 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const serverless = require('serverless-http');
+require('dotenv').config();
 const routes = require("./routes/routes");
 const routes02 = require("./routes/routes02");
-require('dotenv').config();
 
 const app = express();
 
@@ -13,8 +14,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 //Routes section
-app.use("/api/v1", routes);
-app.use("/api/v2", routes02);
+app.use("/.netlify/functions/api/v1", routes);
+app.use("/.netlify/functions/api/v2", routes02);
 
 const options = {
     useNewUrlParser: true,
@@ -30,8 +31,8 @@ mongoose.connect(process.env.DB_CONNECTION_STRING, options, error => {
     }
 });
 
-//Start the server application
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Environment monitoring server started on port ${PORT}`);
-});
+const handler = serverless(app);
+module.exports.handler = async (event, context) => {
+  const result = await handler(event, context);
+  return result;
+};
